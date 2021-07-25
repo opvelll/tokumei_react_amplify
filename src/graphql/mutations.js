@@ -1,43 +1,115 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createTodo = /* GraphQL */ `
-  mutation CreateTodo(
-    $input: CreateTodoInput!
-    $condition: ModelTodoConditionInput
+export const createThread = /* GraphQL */ `
+  mutation CreateThread(
+    $input: CreateThreadInput!
+    $condition: ModelThreadConditionInput
   ) {
-    createTodo(input: $input, condition: $condition) {
+    createThread(input: $input, condition: $condition) {
       id
-      name
-      description
+      type
+      title
+      comments {
+        items {
+          id
+          title
+          threadId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const updateTodo = /* GraphQL */ `
-  mutation UpdateTodo(
-    $input: UpdateTodoInput!
-    $condition: ModelTodoConditionInput
+export const updateThread = /* GraphQL */ `
+  mutation UpdateThread(
+    $input: UpdateThreadInput!
+    $condition: ModelThreadConditionInput
   ) {
-    updateTodo(input: $input, condition: $condition) {
+    updateThread(input: $input, condition: $condition) {
       id
-      name
-      description
+      type
+      title
+      comments {
+        items {
+          id
+          title
+          threadId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteTodo = /* GraphQL */ `
-  mutation DeleteTodo(
-    $input: DeleteTodoInput!
-    $condition: ModelTodoConditionInput
+export const deleteThread = /* GraphQL */ `
+  mutation DeleteThread(
+    $input: DeleteThreadInput!
+    $condition: ModelThreadConditionInput
   ) {
-    deleteTodo(input: $input, condition: $condition) {
+    deleteThread(input: $input, condition: $condition) {
       id
-      name
-      description
+      type
+      title
+      comments {
+        items {
+          id
+          title
+          threadId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createComment = /* GraphQL */ `
+  mutation CreateComment(
+    $input: CreateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    createComment(input: $input, condition: $condition) {
+      id
+      title
+      threadId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateComment = /* GraphQL */ `
+  mutation UpdateComment(
+    $input: UpdateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    updateComment(input: $input, condition: $condition) {
+      id
+      title
+      threadId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteComment = /* GraphQL */ `
+  mutation DeleteComment(
+    $input: DeleteCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    deleteComment(input: $input, condition: $condition) {
+      id
+      title
+      threadId
       createdAt
       updatedAt
     }
