@@ -1,5 +1,20 @@
-type Todo @model {
+type Thread
+  @model
+  @key(
+    name: "byTypeCreatedAt"
+    fields: ["type", "createdAt"]
+    queryField: "byCreatedAt"
+  ) {
   id: ID!
-  name: String!
-  description: String
+  type: String!
+  title: String!
+  comments: [Comment] @connection(keyName: "byThread", fields: ["id"])
+  createdAt: AWSDateTime! @auto
+}
+
+type Comment @model @key(name: "byThread", fields: ["threadId", "createdAt"]) {
+  id: ID!
+  title: String!
+  threadId: ID!
+  createdAt: AWSDateTime! @auto
 }
