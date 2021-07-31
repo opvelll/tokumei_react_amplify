@@ -1,6 +1,17 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCommentByThreadId = /* GraphQL */ `
+  subscription OnCommentByThreadId($threadId: ID!) {
+    onCommentByThreadId(threadId: $threadId) {
+      id
+      title
+      threadId
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateThread = /* GraphQL */ `
   subscription OnCreateThread {
     onCreateThread {

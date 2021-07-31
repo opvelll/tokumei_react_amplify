@@ -1,8 +1,9 @@
 import { API, graphqlOperation } from "aws-amplify";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { createComment } from "../graphql/mutations";
 import { getThread } from "../graphql/queries";
+import { onCommentByThreadId } from "../graphql/subscriptions";
 
 export function Thread() {
   const { threadId } = useParams();
@@ -11,9 +12,14 @@ export function Thread() {
     comments: { items: [] },
   });
   const [commentForm, setCommentForm] = useState({ title: "" });
+  const subscriptionRef = useRef();
 
   useEffect(() => {
     fetchThread();
+    createSubscription();
+    return () => {
+      if (subscriptionRef) subscriptionRef.current.unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -28,9 +34,33 @@ export function Thread() {
   };
 
   // subscription
-  // const commentSubscription = () => {
-  //     const subscription = API.graphql(graphqlOperation(onCreateThread))
-  // }
+  const createSubscription = () => {
+    subscriptionRef.current = API.graphql(
+      graphqlOperation(onCommentByThreadId, { threadId: threadId })
+    ).subscribe({
+      next: (data) => {
+        console.log(data);
+        addComment(data.value.data.onCommentByThreadId);
+      },
+      error: (error) => console.warn(error),
+    });
+  };
+
+  // コメントのリストに新たに追加
+  const addComment = (newComment) => {
+    setThread((thread) => {
+      // リスト内に既にあったら追加しない
+      const idx = thread.comments.items.findIndex(
+        (comment) => comment.id === newComment.id
+      );
+      if (idx !== -1) return thread;
+      console.log("update comment list", thread);
+      return {
+        title: thread.title,
+        comments: { items: [...thread.comments.items, newComment] },
+      };
+    });
+  };
 
   // フォーム送信時
   const onSubmit = async (e) => {
@@ -38,9 +68,11 @@ export function Thread() {
     if (!commentForm.title) return;
     const newComment = await createNewComment();
     setCommentForm({ title: "" });
-    setThread({
-      title: thread.title,
-      comments: { items: [...thread.comments.items, newComment] },
+    setThread((thread) => {
+      return {
+        title: thread.title,
+        comments: { items: [...thread.comments.items, newComment] },
+      };
     });
   };
 
