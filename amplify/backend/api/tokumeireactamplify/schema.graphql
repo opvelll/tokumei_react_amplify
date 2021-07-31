@@ -18,3 +18,8 @@ type Comment @model @key(name: "byThread", fields: ["threadId", "createdAt"]) {
   threadId: ID!
   createdAt: AWSDateTime! @auto
 }
+
+type Subscription {
+  onCommentByThreadId(threadId: ID!): Comment
+    @aws_subscribe(mutations: ["createComment"])
+}
