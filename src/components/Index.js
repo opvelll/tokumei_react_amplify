@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import { byCreatedAt } from "../graphql/queries.js";
 import { createComment, createThread } from "../graphql/mutations.js";
+import { Link } from "react-router-dom";
 
 export function Index() {
   const formFirstValue = { title: "", firstComment: "" };
@@ -66,7 +67,7 @@ export function Index() {
         {threadList.map((thread, index) => {
           return (
             <div key={index}>
-              <a href={thread.id}>{thread.title}</a>
+              <Link to={thread.id}>{thread.title}</Link>
             </div>
           );
         })}
